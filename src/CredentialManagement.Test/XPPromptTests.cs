@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SoftwareApproach.TestingExtensions;
+using FluentAssertions;
 
 namespace CredentialManagement.Test
 {
@@ -30,7 +30,7 @@ namespace CredentialManagement.Test
         [TestMethod]
         public void XPPrompt_Create_ShouldNotBeNull()
         {
-            new XPPrompt().ShouldNotBeNull();
+            new XPPrompt().Should().NotBeNull();
         }
 
         [TestMethod]
@@ -42,52 +42,57 @@ namespace CredentialManagement.Test
         [TestMethod]
         public void XPPrompt_Username_MaxLength()
         {
-            Testing.ShouldThrowException<ArgumentOutOfRangeException>(
-                () => new XPPrompt {Username = MAX_LENGTH_VALIDATION_TEXT});
+            Action act = () => new XPPrompt {Username = MAX_LENGTH_VALIDATION_TEXT};
+            act.Should().Throw<ArgumentOutOfRangeException>();
         }  
         
         [TestMethod]
         public void XPPrompt_Username_NullValue()
         {
-            Testing.ShouldThrowException<ArgumentNullException>(() => new XPPrompt { Username = null });
+            Action act = () => new XPPrompt { Username = null };
+            act.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
         public void XPPrompt_Password_NullValue()
         {
-            Testing.ShouldThrowException<ArgumentNullException>(() => new XPPrompt {Password = null});
+            Action act = () => new XPPrompt {Password = null};
+            act.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
         public void XPPrompt_Target_NullValue()
         {
-            Testing.ShouldThrowException<ArgumentNullException>(() => new XPPrompt {Target = null});
+            Action act = () => new XPPrompt {Target = null};
+            act.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
         public void XPPrompt_Message_MaxLength()
         {
-            Testing.ShouldThrowException<ArgumentOutOfRangeException>(
-                () => new XPPrompt { Message = MAX_LENGTH_VALIDATION_TEXT });
+            Action act = () => new XPPrompt { Message = MAX_LENGTH_VALIDATION_TEXT };
+            act.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
         public void XPPrompt_Message_NullValue()
         {
-            Testing.ShouldThrowException<ArgumentNullException>(() => new XPPrompt { Message = null });
+            Action act = () => new XPPrompt { Message = null };
+            act.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
         public void XPPrompt_Title_MaxLength()
         {
-            Testing.ShouldThrowException<ArgumentOutOfRangeException>(
-                () => new XPPrompt {Title = MAX_LENGTH_VALIDATION_TEXT});
+            Action act = () => new XPPrompt {Title = MAX_LENGTH_VALIDATION_TEXT};
+            act.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
         public void XPPrompt_Title_NullValue()
         {
-            Testing.ShouldThrowException<ArgumentNullException>(() => new XPPrompt { Title = null });
+            Action act = () => new XPPrompt { Title = null };
+            act.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -110,7 +115,8 @@ namespace CredentialManagement.Test
         public void XPPrompt_ShowDialog_Without_Target_ShouldThrowError()
         {
             XPPrompt prompt = new XPPrompt();
-            Testing.ShouldThrowException<InvalidOperationException>(() => prompt.ShowDialog());
+            Action act = () => prompt.ShowDialog();
+            act.Should().Throw<InvalidOperationException>();
             prompt.Dispose();
         }
 
@@ -123,7 +129,7 @@ namespace CredentialManagement.Test
             prompt.Message = "Please enter valid credentials.";
             prompt.ShowSaveCheckBox = true;
             prompt.GenericCredentials = true;
-            prompt.ShowDialog().ShouldEqual(DialogResult.OK);
+            prompt.ShowDialog().Should().Be(DialogResult.OK);
             prompt.Dispose();
         }
 
@@ -142,7 +148,8 @@ namespace CredentialManagement.Test
         {
             XPPrompt prompt = GetDefaultPrompt();
             prompt.AlwaysShowUI = true;
-            Testing.ShouldThrowException<InvalidOperationException>(() => prompt.ShowDialog(IntPtr.Zero));
+            Action act = () => prompt.ShowDialog(IntPtr.Zero);
+            act.Should().Throw<InvalidOperationException>();
             prompt.Dispose();
         }
         
@@ -187,7 +194,7 @@ namespace CredentialManagement.Test
         {
             XPPrompt prompt = GetDefaultPrompt();
             prompt.GenericCredentials = true;
-            prompt.ShowDialog(IntPtr.Zero).ShouldEqual(DialogResult.OK);
+            prompt.ShowDialog(IntPtr.Zero).Should().Be(DialogResult.OK);
             prompt.Dispose();
         }
         
