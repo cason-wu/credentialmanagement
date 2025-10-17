@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Security.Permissions;
 using System.Text;
 
 namespace CredentialManagement
@@ -13,8 +12,6 @@ namespace CredentialManagement
         static object _lockObject = new object();
         bool _disposed;
 
-        static SecurityPermission _unmanagedCodePermission;
-
         CredentialType _type;
         string _target;
         SecureString _password;
@@ -23,13 +20,6 @@ namespace CredentialManagement
         DateTime _lastWriteTime;
         PersistanceType _persistanceType;
 
-        static Credential()
-        {
-            lock (_lockObject)
-            {
-                _unmanagedCodePermission = new SecurityPermission(SecurityPermissionFlag.UnmanagedCode);
-            }
-        }
         public Credential()
             : this(null)
         {
@@ -124,7 +114,6 @@ namespace CredentialManagement
             get
             {
                 CheckNotDisposed();
-                _unmanagedCodePermission.Demand();
                 return null == _password ? new SecureString() : _password.Copy();
             }
             set
@@ -214,7 +203,6 @@ namespace CredentialManagement
         public bool Save()
         {
             CheckNotDisposed();
-            _unmanagedCodePermission.Demand();
 
             byte[] passwordBytes = Encoding.Unicode.GetBytes(Password);
             if (Password.Length > (512))
@@ -243,7 +231,6 @@ namespace CredentialManagement
         public bool Delete()
         {
             CheckNotDisposed();
-            _unmanagedCodePermission.Demand();
 
             if (string.IsNullOrEmpty(Target))
             {
@@ -258,7 +245,6 @@ namespace CredentialManagement
         public bool Load()
         {
             CheckNotDisposed();
-            _unmanagedCodePermission.Demand();
 
             IntPtr credPointer;
 
@@ -277,7 +263,6 @@ namespace CredentialManagement
         public bool Exists()
         {
             CheckNotDisposed();
-            _unmanagedCodePermission.Demand();
 
             if (string.IsNullOrEmpty(Target))
             {
