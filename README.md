@@ -1,3 +1,6 @@
+# 專案描述
+將原專案由.net framework 升級為 .net 8，並移除冗餘項目。
+
 # Project Description
 This library provides .NET based API to deal with Windows Credentials Management API.
 
