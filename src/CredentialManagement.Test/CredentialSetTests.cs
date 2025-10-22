@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SoftwareApproach.TestingExtensions;
+using FluentAssertions;
 
 namespace CredentialManagement.Test
 {
@@ -10,13 +10,13 @@ namespace CredentialManagement.Test
         [TestMethod]
         public void CredentialSet_Create()
         {
-            new CredentialSet().ShouldNotBeNull();
+            new CredentialSet().Should().NotBeNull();
         }
 
         [TestMethod]
         public void CredentialSet_Create_WithTarget()
         {
-            new CredentialSet("target").ShouldNotBeNull();
+            new CredentialSet("target").Should().NotBeNull();
         }
 
         [TestMethod]
@@ -39,8 +39,8 @@ namespace CredentialManagement.Test
 
             CredentialSet set = new CredentialSet();
             set.Load();
-            set.ShouldNotBeNull();
-            set.ShouldNotBeEmpty();
+            set.Should().NotBeNull();
+            set.Should().NotBeEmpty();
 
             credential.Delete();
 
@@ -51,7 +51,7 @@ namespace CredentialManagement.Test
         public void CredentialSet_Load_ShouldReturn_Self()
         {
             CredentialSet set = new CredentialSet();
-            set.Load().ShouldBeOfType(typeof (CredentialSet));
+            set.Load().Should().BeOfType(typeof (CredentialSet));
 
             set.Dispose();
         }
@@ -68,7 +68,7 @@ namespace CredentialManagement.Test
             credential.Save();
 
             CredentialSet set = new CredentialSet("filtertarget");
-            set.Load().ShouldHaveCountOf(1);
+            set.Load().Should().HaveCount(1);
             set.Dispose();
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SoftwareApproach.TestingExtensions;
+using FluentAssertions;
 
 namespace CredentialManagement.Test
 {
@@ -10,24 +10,24 @@ namespace CredentialManagement.Test
         [TestMethod]
         public void Credential_Create_ShouldNotThrowNull()
         {
-            new Credential().ShouldNotBeNull();
+            new Credential().Should().NotBeNull();
         }
 
         [TestMethod]
         public void Credential_Create_With_Username_ShouldNotThrowNull()
         {
-            new Credential("username").ShouldNotBeNull();
+            new Credential("username").Should().NotBeNull();
         }
 
         [TestMethod]
         public void Credential_Create_With_Username_And_Password_ShouldNotThrowNull()
         {
-            new Credential("username", "password").ShouldNotBeNull();
+            new Credential("username", "password").Should().NotBeNull();
         }
         [TestMethod]
         public void Credential_Create_With_Username_Password_Target_ShouldNotThrowNull()
         {
-            new Credential("username", "password","target").ShouldNotBeNull();
+            new Credential("username", "password","target").Should().NotBeNull();
         }
 
         [TestMethod]
@@ -55,14 +55,14 @@ namespace CredentialManagement.Test
         {
             Credential saved = new Credential("username", "password", "target", CredentialType.Generic);
             saved.PersistanceType = PersistanceType.LocalComputer;
-            saved.Save().ShouldBeTrue();
+            saved.Save().Should().BeTrue();
         }
         
         [TestMethod]
         public void Credential_Delete()
         {
             new Credential("username", "password", "target").Save();
-            new Credential("username", "password","target").Delete().ShouldBeTrue();
+            new Credential("username", "password","target").Delete().Should().BeTrue();
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace CredentialManagement.Test
         {
             Credential credential = new Credential((string)null, (string)null, "\0", CredentialType.None);
             credential.Description = (string)null;
-            credential.Delete().ShouldBeFalse();
+            credential.Delete().Should().BeFalse();
         }
        
         [TestMethod]
@@ -80,13 +80,13 @@ namespace CredentialManagement.Test
             setup.Save();
 
             Credential credential = new Credential {Target = "target", Type = CredentialType.Generic };
-            credential.Load().ShouldBeTrue();
+            credential.Load().Should().BeTrue();
 
-            credential.Username.ShouldNotBeEmpty();
-            credential.Password.ShouldNotBeNull();
-            credential.Username.ShouldEqual("username");
-            credential.Password.ShouldEqual("password");
-            credential.Target.ShouldEqual("target");
+            credential.Username.Should().NotBeEmpty();
+            credential.Password.Should().NotBeNull();
+            credential.Username.Should().Be("username");
+            credential.Password.Should().Be("password");
+            credential.Target.Should().Be("target");
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace CredentialManagement.Test
             new Credential { Username = "username", Password = "password", Target = "target" }.Save();
             
             Credential existingCred = new Credential {Target = "target"};
-            existingCred.Exists().ShouldBeTrue();
+            existingCred.Exists().Should().BeTrue();
             
             existingCred.Delete();
         }
